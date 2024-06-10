@@ -36,12 +36,12 @@ public class Bot extends TelegramLongPollingBot {
             if (messageText.startsWith("/chem ")) {
                 String chem = messageText.replace("/chem ", "").trim();
                 response = chemistryService.getChemicalData(chem);
-            } else {
-                response = "Send /chem <element_name> to get chemical data.";
-            }
-            if (messageText.equals("cat")){
+            } else if (messageText.equals("cat")){
                 response = Cat.getRandomCatFact();
+            } else {
+                response = "Send /chem <element_name> to get chemical data or cat to get random cat fact";
             }
+
 
             SendMessage message = new SendMessage();
             message.setChatId(chatId);
