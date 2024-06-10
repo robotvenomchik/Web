@@ -39,6 +39,9 @@ public class Bot extends TelegramLongPollingBot {
             } else {
                 response = "Send /chem <element_name> to get chemical data.";
             }
+            if (messageText.equals("cat")){
+                response = Cat.getRandomCatFact();
+            }
 
             SendMessage message = new SendMessage();
             message.setChatId(chatId);
