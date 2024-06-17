@@ -1,4 +1,4 @@
-
+// File path: src/main/java/org/example/HelloController.java
 package org.example;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +27,8 @@ public class HelloController {
 
         String chemData = chemistryService.getChemicalData(chem);
         model.addAttribute("chem", chemData);
+
+        chemistryService.saveUserSearch(name, email, chem);
 
         return "index";
     }

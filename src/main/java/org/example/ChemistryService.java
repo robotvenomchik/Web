@@ -1,18 +1,28 @@
 // File path: src/main/java/org/example/ChemistryService.java
-
 package org.example;
 
+import org.example.repository.ElementRepository;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.example.Model.UserSearch;
+import org.example.repository.UserSearchRepository;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class ChemistryService {
+
+    @Autowired
+    private UserSearchRepository userSearchRepository;
+
+    @Autowired
+    private ElementRepository elementRepository;
     private final String url = "https://ptable.com/?lang=uk#%D0%92%D0%BB%D0%B0%D1%81%D1%82%D0%B8%D0%B2%D0%BE%D1%81%D1%82%D1%96";
 
     public String getChemicalData(String chem) {
@@ -59,7 +69,23 @@ public class ChemistryService {
         return elementsList;
     }
 
-    public ElementDTO addElement(ElementDTO element) {
-        return element;
+    public UserSearch saveUserSearch(String name, String email, String chem) {
+        Optional<UserSearch> existingSearch = userSearchRepository.findByEmailAndChem(email, chem);
+
+        UserSearch userSearch;
+        if (existingSearch.isPresent()) {
+            userSearch = existingSearch.get();
+            userSearch.setName(name);
+        } else {
+            userSearch = new UserSearch();
+            userSearch.setName(name);
+            userSearch.setEmail(email);
+            userSearch.setChem(chem);
+
+            Optional<org.example.Model.Element> element = elementRepository.findById(1L); // Припустимо, що шукаємо елемент з ID = 1
+            element.ifPresent(userSearch::setElement);
+        }
+
+        return userSearchRepository.save(userSearch);
     }
 }
