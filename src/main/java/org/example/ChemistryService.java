@@ -73,17 +73,18 @@ public class ChemistryService {
         Optional<UserSearch> existingSearch = userSearchRepository.findByEmailAndChem(email, chem);
 
         UserSearch userSearch;
+        org.example.Model.Element element=new org.example.Model.Element(name, "N");
         if (existingSearch.isPresent()) {
+
             userSearch = existingSearch.get();
             userSearch.setName(name);
+
         } else {
             userSearch = new UserSearch();
             userSearch.setName(name);
             userSearch.setEmail(email);
             userSearch.setChem(chem);
-
-            Optional<org.example.Model.Element> element = elementRepository.findById(1L); // Припустимо, що шукаємо елемент з ID = 1
-            element.ifPresent(userSearch::setElement);
+            userSearch.setElement(element);
         }
 
         return userSearchRepository.save(userSearch);

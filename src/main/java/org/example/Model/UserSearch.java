@@ -11,7 +11,7 @@ public class UserSearch {
     private String email;
     private String chem;
 
-    @ManyToOne
+    @ManyToMany
     @JoinColumn(name = "element_id")
     private Element element;
 

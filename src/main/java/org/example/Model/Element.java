@@ -36,4 +36,9 @@ public class Element {
     public void setSymbol(String symbol) {
         this.symbol = symbol;
     }
+
+    public Element(String name, String symbol) {
+        this.name = name;
+        this.symbol = symbol;
+    }
 }
